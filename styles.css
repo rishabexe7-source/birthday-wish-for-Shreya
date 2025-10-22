@@ -1,0 +1,581 @@
+:root {
+    --primary: #ff3b8c;
+    --primary-light: #ff97c7;
+    --primary-dark: #ff1f57;
+    --bg-gradient: linear-gradient(135deg, #ffd6e9, #ffc2e1);
+    --card-bg: #fff;
+    --shadow-sm: 0 4px 6px rgba(255, 59, 140, 0.1);
+    --shadow-md: 0 8px 20px rgba(255, 59, 140, 0.15);
+    --shadow-lg: 0 12px 40px rgba(255, 59, 140, 0.2);
+}
+
+/* Base Styles */
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg-gradient);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.sparkles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: 
+        radial-gradient(2px 2px at 40px 60px, #fff, transparent),
+        radial-gradient(2px 2px at 20px 50px, #fff, transparent),
+        radial-gradient(2px 2px at 30px 100px, #fff, transparent),
+        radial-gradient(2px 2px at 90px 40px, #fff, transparent);
+    animation: sparkle 4s infinite;
+}
+
+/* Card Container */
+.card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 40px;
+    width: 95%;
+    max-width: 1200px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Celebration Banner */
+.celebration-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(45deg, var(--primary-dark), var(--primary));
+    color: white;
+    padding: 15px;
+    text-align: center;
+    transform: translateY(-100%);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.celebration-banner.show {
+    transform: translateY(0);
+}
+
+.banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    font-size: 24px;
+}
+
+/* Content Layout */
+.content-wrapper {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 40px;
+    margin-top: 30px;
+}
+
+/* Cake Section */
+.cake-container {
+    position: relative;
+    text-align: center;
+}
+
+.cake-wrapper {
+    position: relative;
+    margin-bottom: 30px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.cake-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transform-origin: center bottom;
+}
+
+/* Candles Layer */
+.candles-layer {
+    position: absolute;
+    top: 15%;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+}
+
+.candle-row {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+.candle {
+    width: 18px; /* increased */
+    height: 65px; /* increased */
+    background: linear-gradient(180deg, #ffd9b3, #ffcc99);
+    border-radius: 4px;
+    position: relative;
+    transform-origin: center bottom;
+    box-shadow: 0 6px 14px rgba(255,136,0,0.18);
+}
+
+.flame {
+    position: absolute;
+    top: -28px; /* moved up for larger flame */
+    left: 50%;
+    width: 22px; /* increased */
+    height: 30px; /* increased */
+    background: radial-gradient(circle at 30% 25%, #fff4a3 0%, #ffd200 18%, #ff7b2e 60%);
+    border-radius: 50% 50% 50% 20%;
+    transform: translateX(-50%);
+    filter: drop-shadow(0 6px 18px rgba(255,140,30,0.35));
+    animation: flicker 0.28s infinite alternate;
+}
+
+/* Smooth extinguish transition */
+.candle.out {
+    transform: translateY(6px) scale(0.98);
+}
+.candle.out .flame {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.08);
+    transition: opacity 420ms ease, transform 420ms cubic-bezier(.2,.9,.2,1);
+}
+
+/* ===== ADDED: slow-burning flame, ember + burning state, refined timings ===== */
+
+/* burning state for overlay HTML flame */
+.flame.burning {
+    /* reduce height / scale to simulate burning down */
+    transform-origin: 50% 100%;
+    transition: transform 900ms cubic-bezier(.2,.9,.2,1), opacity 900ms linear, filter 900ms linear;
+    transform: translateX(-50%) scaleY(0.72) scaleX(0.95);
+    opacity: 0.85;
+    filter: drop-shadow(0 6px 14px rgba(255,140,30,0.35)) saturate(1.1) blur(0.2px);
+}
+
+/* tiny ember particles */
+.ember {
+    position: absolute;
+    pointer-events: none;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff2a8 0%, #ff9d2b 22%, #ff5e3a 60%, transparent 100%);
+    filter: blur(0.4px) drop-shadow(0 2px 4px rgba(255,140,60,0.25));
+    opacity: 1;
+    transform-origin: center;
+    will-change: transform, opacity;
+    animation: emberFall 1100ms cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+/* ember trajectory */
+@keyframes emberFall {
+    0% { transform: translate(0,0) scale(1); opacity: 1; }
+    60% { transform: translate(var(--ex), var(--ey)) scale(0.8); opacity: 0.9; }
+    100% { transform: translate(calc(var(--ex) * 1.6), calc(var(--ey) + 18px)) scale(0.4); opacity: 0; }
+}
+
+/* refine existing partyPiece speed for combined effect */
+.party-piece {
+    will-change: transform, opacity;
+}
+
+/* ensure flame transition exists on base flame */
+.flame {
+    transition: transform 900ms cubic-bezier(.2,.9,.2,1), opacity 900ms linear, filter 900ms linear;
+}
+
+/* Message Section */
+.message-card {
+    background: linear-gradient(145deg, #fff5f9, #fff);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 320ms ease, transform 320ms ease, border-color 320ms ease;
+}
+
+.card-header {
+    color: var(--primary);
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.card-content {
+    line-height: 1.8;
+    color: #2d1422;
+}
+
+.card-footer {
+    margin-top: 30px;
+    text-align: right;
+    font-style: italic;
+}
+
+.signature {
+    display: block;
+    color: var(--primary);
+    font-size: 24px;
+    margin-top: 10px;
+}
+
+/* highlight applied when candles are blown */
+.message-card.highlight {
+    border: 2px solid rgba(255,59,140,0.12);
+    box-shadow: 0 20px 60px rgba(255,59,140,0.16), 0 0 0 6px rgba(255,107,147,0.06);
+    transform: translateY(-6px);
+}
+
+/* Buttons */
+.blow-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px auto;
+}
+
+.blow-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ===== ADDED: Extra party effects (ribbons, star-sparkles, large bursts, fireworks canvas) ===== */
+
+.extra-party-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+/* ribbon streamers */
+.ribbon-strip {
+    position: absolute;
+    width: 10px;
+    height: 140px;
+    border-radius: 6px;
+    opacity: 0.95;
+    transform-origin: top center;
+    will-change: transform, opacity;
+    animation: ribbonFall 2200ms cubic-bezier(.2,.8,.2,1) forwards;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+@keyframes ribbonFall {
+    0% { transform: translateY(-40vh) rotate(-20deg) scaleY(0.8); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg) scaleY(1); opacity: 0.95; }
+}
+
+/* star sparkles floating across screen */
+.star-sparkle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,0.7) 30%, transparent 60%);
+    border-radius: 50%;
+    filter: drop-shadow(0 4px 10px rgba(255,255,255,0.25)) saturate(1.2);
+    animation: sparkleFloat 2600ms ease-in-out forwards;
+    will-change: transform, opacity;
+}
+
+@keyframes sparkleFloat {
+    0% { transform: translateY(0) scale(0.6); opacity: 0; }
+    25% { opacity: 1; transform: translateY(-8vh) scale(1.1); }
+    100% { transform: translateY(28vh) scale(0.6); opacity: 0; }
+}
+
+/* extra colorful confetti (different style from existing) */
+.extra-confetti {
+    position: absolute;
+    width: 12px;
+    height: 20px;
+    background: linear-gradient(45deg, #ff6b6b, #ffd56b);
+    border-radius: 2px;
+    will-change: transform, opacity;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+    transform-origin: center;
+    animation: extraConfettiFall 2200ms cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+@keyframes extraConfettiFall {
+    0% { transform: translateY(-10vh) rotate(0) scale(1); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg) scale(0.85); opacity: 0; }
+}
+
+/* fireworks canvas occupies layer */
+.fireworks-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10000;
+}
+
+/* subtle flash overlay for burst */
+.burst-flash {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0; top: 0;
+    background: radial-gradient(circle at 50% 30%, rgba(255,255,255,0.18), rgba(255,255,255,0.04) 30%, transparent 60%);
+    opacity: 0;
+    pointer-events: none;
+    animation: burstFlash 600ms ease-out forwards;
+    z-index: 10001;
+}
+
+@keyframes burstFlash {
+    0% { opacity: 0; transform: scale(0.98); }
+    20% { opacity: 1; }
+    100% { opacity: 0; transform: scale(1.02); }
+}
+
+/* cleanup helper (fade-out) */
+.party-fade-out {
+    animation: partyFadeOut 900ms ease-out forwards;
+}
+@keyframes partyFadeOut {
+    from { opacity: 1; filter: blur(0); }
+    to { opacity: 0; filter: blur(6px); }
+}
+
+/* Animations */
+@keyframes sparkle {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 0.4; }
+}
+
+@keyframes flicker {
+    0% { transform: translateX(-50%) scale(1.0); }
+    100% { transform: translateX(-50%) scale(0.9); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.floating {
+    animation: float 4s ease-in-out infinite;
+}
+
+/* sparkle particle used when each candle is blown */
+.sparkle-particle {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(255,200,240,0.8) 20%, transparent 55%);
+    mix-blend-mode: screen;
+    will-change: transform, opacity;
+    animation: sparkleEffect 800ms cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+/* overall party burst (larger colorful pieces) */
+.party-piece {
+    position: absolute;
+    pointer-events: none;
+    will-change: transform, opacity;
+    border-radius: 2px;
+    opacity: 1;
+}
+
+/* sparkle keyframe */
+@keyframes sparkleEffect {
+    0% { transform: translate(0,0) scale(0.2); opacity: 0.95; }
+    60% { transform: translate(var(--tx), var(--ty)) scale(1); opacity: 0.95; }
+    100% { transform: translate(calc(var(--tx) * 1.5), calc(var(--ty) * 1.2)) scale(0.2); opacity: 0; }
+}
+@keyframes partyPiece {
+    0% { transform: translate(0,0) rotate(0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--px), var(--py)) rotate(720deg) scale(0.6); opacity: 0; }
+}
+
+/* Decorative Elements */
+.decoration-elements {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.balloon {
+    font-size: 40px;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+}
+
+.balloon:nth-child(2) { animation-delay: -1s; }
+.balloon:nth-child(3) { animation-delay: -2s; }
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .card { padding: 30px; }
+    .content-wrapper { grid-template-columns: 1fr; }
+    .cake-wrapper { max-width: 600px; margin: 0 auto; }
+
+}
+
+@media (max-width: 640px) {
+    .card { padding: 20px; }
+    .celebration-banner { font-size: 18px; }
+    .candle-row { gap: 25px; }
+}
+
+/* REPLACE/ADD: simple sprinkles, balloons and ground popups (undo complex extra-party effects) */
+#simplePartyLayer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+/* tiny rising sprinkles */
+.sprinkle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    opacity: 0.95;
+    transform: translateY(0) scale(0.8);
+    animation: sprinkleRise 1600ms cubic-bezier(.2,.8,.2,1) forwards;
+    will-change: transform, opacity;
+}
+@keyframes sprinkleRise {
+    0% { transform: translateY(0) scale(0.7); opacity: 1; }
+    100% { transform: translateY(-120vh) scale(1); opacity: 0; }
+}
+
+/* balloons rising */
+.balloon {
+    position: absolute;
+    bottom: 6vh;
+    transform: translateY(0);
+    will-change: transform, opacity;
+    animation-name: balloonRise;
+    animation-timing-function: cubic-bezier(.2,.9,.2,1);
+    animation-fill-mode: forwards;
+    font-size: 36px;
+    opacity: 0;
+}
+@keyframes balloonRise {
+    0% { transform: translateY(0) scale(0.9); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateY(-140vh) scale(1.05); opacity: 0; }
+}
+
+/* ground popup that rises up and fades */
+.popup-ground {
+    position: absolute;
+    bottom: 6vh;
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
+    background: linear-gradient(135deg,#fff,#fff7fb);
+    padding: 12px 18px;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    font-weight: 600;
+    color: #5a2940;
+    animation: popupUp 1800ms cubic-bezier(.2,.8,.2,1) forwards;
+    will-change: transform, opacity;
+}
+@keyframes popupUp {
+    0% { transform: translateX(-50%) translateY(28vh) scale(0.96); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: translateX(-50%) translateY(-40vh) scale(1); opacity: 0; }
+}
+
+/* small helper to slightly vary sizes */
+.sprinkle.small { width:6px; height:6px; }
+
+/* ===== ADDED: keep floating emojis paused/hidden until user presses the blow button ===== */
+.floating {
+    /* keep original animations but paused by default */
+    animation-play-state: paused !important;
+    opacity: 0;
+    transition: opacity 360ms ease, transform 360ms ease;
+}
+
+/* when JS reveals them we add a helper class */
+.floating.revealed {
+    animation-play-state: running !important;
+    opacity: 1 !important;
+}
+.fade-out {
+  animation: fadeOut 0.5s forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+
+.content-wrapper {
+    grid-template-columns: 1fr; 
+    display: flex; 
+    justify-content: center; 
+    margin: 30px auto 0 auto;
+    align-items: flex-start; 
+}
+
+.cake-section {
+    width: 100%;
+    max-width: 600px; 
+    text-align: center;
+}
+
+
+.open-button {
+    padding: 12px 25px;
+    font-size: 16px;
+    background: var(--card-bg); 
+    color: var(--primary); 
+    border: 2px solid var(--primary-light); 
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm); 
+    transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+    font-weight: 600;
+    display: inline-block;
+    width: auto;
+}
+
+.open-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(2, 0, 1, 0.2); 
+    background: var(--primary-light); 
+    color: var(--card-bg); 
+    border-color: var(--primary-light); 
+}
+
+#continueBtn {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease 0.8s;
+}
+#continueBtn.show-btn {
+    opacity: 1;
+    pointer-events: auto;
+}
+

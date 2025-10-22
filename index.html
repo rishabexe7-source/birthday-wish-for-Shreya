@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Birthday Card for Shreya</title>
+    <style>
+        :root {
+            --primary: #ff3b8c;
+            --bg-gradient: linear-gradient(135deg, #ffd6e9, #ffc2e1);
+            --card-bg: #fff;
+            --shadow: 0 10px 40px rgba(255, 59, 140, 0.2);
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg-gradient);
+            font-family: system-ui, -apple-system, sans-serif;
+            display: grid;
+            place-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ribbon {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 120px;
+            height: 120px;
+            overflow: hidden;
+        }
+
+        .ribbon::before {
+            content: 'Special';
+            position: absolute;
+            background: var(--primary);
+            color: white;
+            padding: 5px 0;
+            width: 150px;
+            text-align: center;
+            transform: rotate(45deg) translateY(20px);
+            font-size: 14px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 32px;
+            margin: 0 0 20px;
+        }
+
+        .card-preview {
+            background: linear-gradient(145deg, #fff5f9, #fff);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 2px dashed rgba(255, 59, 140, 0.2);
+            position: relative;
+        }
+
+        .preview-content {
+            opacity: 0.6;
+            filter: blur(3px);
+        }
+
+        .lock-icon {
+            font-size: 40px;
+            margin: 20px 0;
+        }
+
+        .open-button {
+            background: linear-gradient(45deg, var(--primary), #ff1f57);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 5px 15px rgba(255, 59, 140, 0.3);
+        }
+
+        .open-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 59, 140, 0.4);
+        }
+
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .decoration {
+            font-size: 24px;
+            position: absolute;
+            opacity: 0.8;
+        }
+
+        .d1 { top: 20px; left: 20px; }
+        .d2 { top: 20px; right: 20px; }
+        .d3 { bottom: 20px; left: 20px; }
+        .d4 { bottom: 20px; right: 20px; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .date {
+            color: #666;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="ribbon"></div>
+        <h1>A Birthday Surprise</h1>
+        <div class="date">October 24, 2025</div>
+
+        <div class="card-preview">
+            <div class="preview-content">
+                <span class="decoration d1 floating">🎈</span>
+                <span class="decoration d2 floating">🎀</span>
+                <span class="decoration d3 floating">✨</span>
+                <span class="decoration d4 floating">💝</span>
+                <div class="lock-icon">🎁</div>
+                <p>A special birthday message awaits...</p>
+            </div>
+        </div>
+        <div id="cakeContainer" style="display:none;"></div>
+        <iframe id="cakeContainer" src="cake.html" style="width:100%;height:600px;display:none;border:none;"></iframe>
+
+        <a href="cake.html">
+            <button class="open-button">
+                Open Card
+            </button>
+    </div>
+</body>
+</html>

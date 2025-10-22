@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Cake — Happy Birthday Shreya! 🎂</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <div class="sparkles"></div>
+    <main class="card">
+        <div class="celebration-banner" id="celebrationBanner">
+            <div class="banner-content">
+                <span class="emoji">🎉</span>
+                <h2>Happy Birthday Shreya!</h2>
+                <span class="emoji">🎂</span>
+            </div>
+        </div>
+
+        <div class="title">
+            <div class="icon"><span class="sparkle">🎀</span></div>
+            <div>
+                <h1 id="greeting">Happy Birthday, Shreya!</h1>
+                <div class="subtitle">On your special day - October 24, 2025 ✨</div>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Left: Cake Section (unchanged) -->
+            <div class="cake-section">
+                <div class="cake-container">
+                    <div class="cake-wrapper">
+                        <img src="cake.jpg" alt="Birthday Cake" class="cake-img" />
+                        <div class="candles-layer">
+                            <div class="candle-row">
+                                <div class="candle"><div class="flame"></div></div>
+                                <div class="candle"><div class="flame"></div></div>
+                                <div class="candle"><div class="flame"></div></div>
+                                <div class="candle"><div class="flame"></div></div>
+                                <div class="candle"><div class="flame"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="blowBtn" class="blow-button">
+                        <span class="btn-icon">🕯️</span>
+                        <span class="btn-text">Blow Candles</span>
+                    </button>
+
+                    <!-- Continue button navigates to the message page -->
+                    <div style="margin-top:18px; text-align:center;">
+                        <a href="message.html">
+                            <button class="open-button" id="continueBtn">Continue</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Note: right/message column intentionally removed from this page per request -->
+        </div>
+
+        <div id="confettiContainer" style="position: absolute; inset: 0; pointer-events: none; overflow: hidden;"></div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
